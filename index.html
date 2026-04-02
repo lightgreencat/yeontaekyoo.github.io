@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Yeontaek Yoo — Transportation Researcher & PhD Candidate at University of Calgary.">
+<title>Yeontaek Yoo | Transportation Researcher</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   DESIGN TOKENS — Light Academic Theme
+   ============================================================ */
+:root {
+  --color-bg:           #ffffff;
+  --color-bg-2:         #f8fafc;
+  --color-bg-card:      #ffffff;
+  --color-border:       #e2e8f0;
+  --color-text-primary: #0f172a;
+  --color-text-secondary:#475569;
+  --color-text-light:   #94a3b8;
+  --color-accent:       #1d4ed8;
+  --color-accent-hover: #1e40af;
+  --color-accent-light: #dbeafe;
+  --nav-height:         64px;
+  --max-w:              1200px;
+  --radius:             12px;
+  --shadow-sm:          0 1px 3px rgba(0,0,0,0.07);
+  --shadow-md:          0 4px 16px rgba(0,0,0,0.10);
+  --shadow-lg:          0 8px 32px rgba(0,0,0,0.12);
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--color-bg);
+  color:var(--color-text-primary);
+  line-height:1.6;
+  overflow-x:hidden;
+}
+body.lang-kr{font-family:'Noto Sans KR',sans-serif}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+ul{list-style:none}
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+#nav{
+  position:fixed;top:0;left:0;right:0;
+  height:var(--nav-height);
+  z-index:1000;
+  background:rgba(255,255,255,0.96);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--color-border);
+  transition:box-shadow 0.3s;
+}
+#nav.scrolled{box-shadow:var(--shadow-md)}
+.nav-inner{
+  max-width:var(--max-w);
+  margin:0 auto;height:100%;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 2rem;
+}
+.nav-logo{
+  font-weight:800;font-size:1.3rem;
+  color:var(--color-accent);
+  letter-spacing:-0.02em;cursor:pointer;
+}
+.nav-links{display:flex;align-items:center;gap:0.125rem}
+.nav-links>li{position:relative}
+.nav-links>li>a,
+.nav-links>li>button{
+  display:flex;align-items:center;gap:4px;
+  padding:0.5rem 0.875rem;
+  font-size:0.875rem;font-weight:500;
+  color:var(--color-text-secondary);
+  border-radius:8px;border:none;background:none;
+  cursor:pointer;font-family:inherit;
+  transition:color 0.2s,background 0.2s;
+  white-space:nowrap;
+}
+.nav-links>li>a:hover,
+.nav-links>li>button:hover,
+.nav-links>li>a.active{
+  color:var(--color-accent);background:var(--color-accent-light)
+}
+.dropdown-arrow{font-size:0.65rem;transition:transform 0.25s}
+.dropdown-menu{
+  display:none;
+  position:absolute;top:calc(100% + 4px);left:0;
+  background:var(--color-bg-card);
+  border:1px solid var(--color-border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-lg);
+  min-width:160px;overflow:hidden;z-index:200;
+}
+.has-dropdown:hover .dropdown-menu,
+.has-dropdown:focus-within .dropdown-menu{display:block}
+.has-dropdown:hover .dropdown-arrow{transform:rotate(180deg)}
+.dropdown-menu a{
+  display:block;padding:0.6rem 1rem;
+  font-size:0.875rem;color:var(--color-text-secondary);
+  transition:color 0.15s,background 0.15s;
+}
+.dropdown-menu a:hover{color:var(--color-accent);background:var(--color-accent-light)}
+.lang-toggle{
+  margin-left:0.75rem;
+  padding:0.4rem 0.875rem;
+  border:1.5px solid var(--color-accent);
+  border-radius:20px;
+  font-size:0.8rem;font-weight:600;
+  color:var(--color-accent);background:none;
+  cursor:pointer;font-family:inherit;
+  transition:all 0.2s;
+}
+.lang-toggle:hover{background:var(--color-accent);color:#fff}
+.hamburger{
+  display:none;flex-direction:column;gap:5px;
+  cursor:pointer;padding:6px;border:none;background:none;
+}
+.hamburger span{
+  width:24px;height:2px;
+  background:var(--color-text-primary);
+  border-radius:2px;transition:all 0.3s;
+}
+.mobile-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(255,255,255,0.98);
+  z-index:999;flex-direction:column;
+  align-items:center;justify-content:center;gap:1.5rem;
+}
+.mobile-overlay.open{display:flex}
+.mobile-overlay a,.mobile-overlay button{
+  font-size:1.3rem;font-weight:600;
+  color:var(--color-text-primary);
+  background:none;border:none;font-family:inherit;cursor:pointer;
+  padding:0.4rem 1rem;
+}
+.mobile-overlay a:hover{color:var(--color-accent)}
+.mobile-close{
+  position:absolute;top:1.25rem;right:1.5rem;
+  font-size:1.8rem;cursor:pointer;
+  background:none;border:none;color:var(--color-text-secondary);
+}
+.mobile-sub{display:flex;flex-direction:column;align-items:center;gap:0.5rem}
+.mobile-sub a{font-size:1rem;color:var(--color-text-secondary)}
+
+/* ============================================================
+   SECTION SCAFFOLD
+   ============================================================ */
+section{padding:5.5rem 2rem}
+section:nth-child(even){background:var(--color-bg-2)}
+.section-inner{max-width:var(--max-w);margin:0 auto}
+.section-label{
+  font-size:0.75rem;font-weight:700;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--color-accent);margin-bottom:0.4rem;
+}
+.section-title{
+  font-size:clamp(1.75rem,3vw,2.5rem);
+  font-weight:700;color:var(--color-text-primary);
+  line-height:1.2;margin-bottom:0.75rem;
+}
+.section-desc{
+  color:var(--color-text-secondary);
+  max-width:640px;font-size:1rem;margin-bottom:3rem;
+  line-height:1.7;
+}
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+.reveal{
+  opacity:0;transform:translateY(24px);
+  transition:opacity 0.6s ease,transform 0.6s ease;
+}
+.reveal.visible{opacity:1;transform:none}
+
+/* ============================================================
+   ABOUT
+   ============================================================ */
+#about{padding-top:calc(var(--nav-height) + 4rem)}
+.about-grid{
+  display:grid;
+  grid-template-columns:300px 1fr;
+  gap:4rem;align-items:start;
+}
+.about-photo-wrap{
+  position:sticky;
+  top:calc(var(--nav-height) + 2rem);
+}
+.about-photo{
+  width:100%;aspect-ratio:3/4;
+  border-radius:var(--radius);overflow:hidden;
+  border:3px solid var(--color-border);
+  box-shadow:var(--shadow-lg);
+  background:var(--color-bg-2);
+}
+.about-photo img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:top center;
+}
+.about-name{
+  font-size:clamp(2rem,3.5vw,2.8rem);
+  font-weight:800;color:var(--color-text-primary);
+  line-height:1.1;margin-bottom:0.35rem;
+}
+.about-name-kr{
+  font-size:1.1rem;font-weight:400;
+  color:var(--color-text-light);margin-left:0.5rem;
+}
+.about-title{
+  font-size:1rem;color:var(--color-accent);
+  font-weight:600;margin-bottom:1.5rem;
+}
+.about-bio{
+  color:var(--color-text-secondary);
+  line-height:1.8;font-size:0.975rem;
+  margin-bottom:1.75rem;
+}
+.about-quote{
+  border-left:3px solid var(--color-accent);
+  padding:0.75rem 1.25rem;
+  margin-bottom:2rem;
+  background:var(--color-accent-light);
+  border-radius:0 8px 8px 0;
+  font-style:italic;color:var(--color-text-secondary);
+  font-size:0.925rem;
+}
+.about-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:0.875rem;margin-bottom:2rem;
+}
+.stat-card{
+  text-align:center;padding:1.1rem 0.5rem;
+  border:1px solid var(--color-border);
+  border-radius:var(--radius);
+  background:var(--color-bg-card);
+  box-shadow:var(--shadow-sm);
+  transition:transform 0.2s,box-shadow 0.2s;
+}
+.stat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.stat-number{
+  font-size:1.875rem;font-weight:800;
+  color:var(--color-accent);line-height:1;
+  margin-bottom:0.2rem;
+}
+.stat-label{
+  font-size:0.72rem;color:var(--color-text-secondary);
+  font-weight:600;text-transform:uppercase;
+  letter-spacing:0.05em;
+}
+.about-contacts{display:flex;flex-wrap:wrap;gap:0.6rem}
+.contact-chip{
+  display:flex;align-items:center;gap:0.35rem;
+  padding:0.4rem 0.8rem;
+  border:1px solid var(--color-border);
+  border-radius:20px;font-size:0.82rem;
+  color:var(--color-text-secondary);
+  background:var(--color-bg-card);
+  transition:all 0.2s;
+}
+.contact-chip:hover{
+  border-color:var(--color-accent);
+  color:var(--color-accent);
+  background:var(--color-accent-light);
+}
+
+/* ============================================================
+   EDUCATION
+   ============================================================ */
+.edu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.edu-card{
+  padding:1.75rem;
+  border:1px solid var(--color-border);
+  border-radius:var(--radius);
+  background:var(--color-bg-card);
+  box-shadow:var(--shadow-sm);
+  transition:transform 0.2s,box-shadow 0.2s;
+  position:relative;overflow:hidden;
+}
+.edu-card::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:3px;
+  background:var(--color-accent);
+  opacity:0;transition:opacity 0.2s;
+}
+.edu-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.edu-card:hover::before,.edu-card.featured::before{opacity:1}
+.edu-degree{
+  font-size:0.75rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:0.08em;
+  color:var(--color-accent);margin-bottom:0.35rem;
+}
+.edu-field{
+  font-size:1.025rem;font-weight:700;
+  color:var(--color-text-primary);margin-bottom:0.2rem;
+}
+.edu-school{font-size:0.875rem;color:var(--color-text-secondary);margin-bottom:0.6rem}
+.edu-year{font-size:0.82rem;color:var(--color-text-light);font-weight:500}
+.edu-thesis{
+  margin-top:0.75rem;padding-top:0.75rem;
+  border-top:1px solid var(--color-border);
+  font-size:0.825rem;color:var(--color-text-secondary);
+  font-style:italic;line-height:1.5;
+}
+
+/* ============================================================
+   RESEARCH
+   ============================================================ */
+.research-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.research-card{
+  padding:1.875rem;
+  border:1px solid var(--color-border);
+  border-radius:var(--radius);
+  background:var(--color-bg-card);
+  box-shadow:var(--shadow-sm);
+  transition:transform 0.2s,box-shadow 0.2s;
+}
+.research-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.research-icon{
+  width:48px;height:48px;border-radius:12px;
+  background:var(--color-accent-light);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:1.125rem;font-size:1.5rem;
+}
+.research-title{
+  font-size:1rem;font-weight:700;
+  margin-bottom:0.5rem;color:var(--color-text-primary);
+}
+.research-desc{
+  font-size:0.875rem;color:var(--color-text-secondary);
+  line-height:1.7;margin-bottom:1rem;
+}
+.research-tags{display:flex;flex-wrap:wrap;gap:0.375rem}
+.tag{
+  font-size:0.72rem;padding:0.2rem 0.55rem;
+  border-radius:20px;
+  background:var(--color-accent-light);
+  color:var(--color-accent);font-weight:600;
+}
+
+/* ============================================================
+   PUBLICATIONS
+   ============================================================ */
+.pub-filter{display:flex;gap:0.5rem;margin-bottom:2.5rem;flex-wrap:wrap}
+.pub-filter button{
+  padding:0.4rem 1.1rem;border-radius:20px;
+  border:1.5px solid var(--color-border);
+  background:none;font-size:0.85rem;font-weight:600;
+  color:var(--color-text-secondary);cursor:pointer;
+  font-family:inherit;transition:all 0.2s;
+}
+.pub-filter button.active,
+.pub-filter button:hover{
+  border-color:var(--color-accent);
+  background:var(--color-accent);color:#fff;
+}
+.pub-list{display:flex;flex-direction:column;gap:2rem}
+.pub-item{
+  border:1px solid var(--color-border);
+  border-radius:var(--radius);
+  background:var(--color-bg-card);
+  overflow:hidden;box-shadow:var(--shadow-sm);
+  transition:box-shadow 0.2s;
+}
+.pub-item:hover{box-shadow:var(--shadow-md)}
+.pub-header{
+  display:grid;grid-template-columns:1fr auto;
+  gap:1rem;padding:1.75rem 1.75rem 1.25rem;
+  align-items:start;
+}
+.pub-year-badge{
+  display:inline-block;padding:0.18rem 0.6rem;
+  background:var(--color-accent);color:#fff;
+  border-radius:20px;font-size:0.75rem;
+  font-weight:700;margin-bottom:0.5rem;
+}
+.pub-title{
+  font-size:1.025rem;font-weight:700;
+  color:var(--color-text-primary);
+  line-height:1.45;margin-bottom:0.4rem;
+}
+.pub-authors{font-size:0.86rem;color:var(--color-text-secondary);margin-bottom:0.25rem}
+.pub-journal{font-size:0.86rem;color:var(--color-text-secondary);font-style:italic}
+.pub-role{
+  flex-shrink:0;padding:0.22rem 0.65rem;
+  border-radius:20px;font-size:0.72rem;font-weight:700;
+}
+.pub-role.first{background:#dcfce7;color:#166534}
+.pub-role.co{background:#fef3c7;color:#92400e}
+.pub-body{
+  padding:0 1.75rem 1.75rem;
+  border-top:1px solid var(--color-border);
+}
+.pub-framework{margin-top:1.25rem}
+.framework-title{
+  font-size:0.76rem;font-weight:700;
+  color:var(--color-text-secondary);
+  text-transform:uppercase;letter-spacing:0.08em;
+  margin-bottom:0.625rem;
+}
+/* CSS Flowchart */
+.flowchart{
+  display:flex;flex-wrap:wrap;
+  align-items:center;gap:0.375rem;
+  padding:1rem 1.125rem;
+  background:var(--color-bg-2);
+  border-radius:8px;font-size:0.78rem;
+}
+.fc-box{
+  padding:0.3rem 0.65rem;
+  border:1.5px solid var(--color-accent);
+  border-radius:6px;
+  color:var(--color-accent);
+  background:var(--color-accent-light);
+  font-weight:600;line-height:1.4;
+  text-align:center;white-space:nowrap;
+}
+.fc-box.highlight{background:var(--color-accent);color:#fff}
+.fc-box small{font-weight:400;font-size:0.7rem;display:block}
+.fc-arrow{color:var(--color-text-light);font-size:0.9rem}
+.fc-note{
+  font-size:0.74rem;color:var(--color-text-secondary);
+  font-style:italic;margin-top:0.5rem;width:100%;
+  line-height:1.5;
+}
+.pub-links{display:flex;gap:0.6rem;margin-top:1rem;flex-wrap:wrap}
+.pub-link{
+  display:inline-flex;align-items:center;gap:0.3rem;
+  padding:0.35rem 0.825rem;
+  border:1.5px solid var(--color-accent);
+  border-radius:20px;font-size:0.78rem;
+  font-weight:700;color:var(--color-accent);
+  transition:all 0.2s;
+}
+.pub-link:hover{background:var(--color-accent);color:#fff}
+.pub-link.doi{background:var(--color-accent);color:#fff}
+.pub-link.doi:hover{background:var(--color-accent-hover);border-color:var(--color-accent-hover)}
+
+/* ============================================================
+   EXPERIENCE TIMELINE
+   ============================================================ */
+.timeline{position:relative;padding-left:2.5rem}
+.timeline::before{
+  content:'';position:absolute;
+  left:10px;top:6px;bottom:0;width:2px;
+  background:linear-gradient(to bottom,var(--color-accent),var(--color-border));
+}
+.timeline-item{position:relative;margin-bottom:2.5rem}
+.timeline-dot{
+  position:absolute;left:-2.5rem;top:6px;
+  width:12px;height:12px;border-radius:50%;
+  background:var(--color-accent);
+  border:2.5px solid var(--color-bg);
+  box-shadow:0 0 0 2px var(--color-accent);
+}
+.timeline-date{
+  font-size:0.78rem;font-weight:700;
+  color:var(--color-accent);
+  text-transform:uppercase;letter-spacing:0.06em;
+  margin-bottom:0.25rem;
+}
+.timeline-role{
+  font-size:1.05rem;font-weight:700;
+  color:var(--color-text-primary);margin-bottom:0.18rem;
+}
+.timeline-org{
+  font-size:0.875rem;color:var(--color-text-secondary);
+  margin-bottom:0.7rem;
+}
+.timeline-bullets{display:flex;flex-direction:column;gap:0.35rem}
+.timeline-bullets li{
+  font-size:0.875rem;color:var(--color-text-secondary);
+  padding-left:1.1rem;position:relative;line-height:1.65;
+}
+.timeline-bullets li::before{
+  content:'▸';position:absolute;left:0;
+  color:var(--color-accent);font-size:0.7rem;top:3px;
+}
+
+/* ============================================================
+   RECOGNITION
+   ============================================================ */
+.recognition-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem}
+.recog-list{display:flex;flex-direction:column;gap:0.875rem}
+.recog-item{
+  display:flex;gap:1rem;padding:1.125rem;
+  border:1px solid var(--color-border);
+  border-radius:var(--radius);
+  background:var(--color-bg-card);box-shadow:var(--shadow-sm);
+  transition:transform 0.2s;
+}
+.recog-item:hover{transform:translateX(4px)}
+.recog-icon{
+  width:40px;height:40px;flex-shrink:0;
+  border-radius:8px;background:var(--color-accent-light);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;
+}
+.recog-year{font-size:0.75rem;font-weight:700;color:var(--color-accent);margin-bottom:0.18rem}
+.recog-title{
+  font-size:0.925rem;font-weight:700;
+  color:var(--color-text-primary);line-height:1.35;margin-bottom:0.18rem;
+}
+.recog-org{font-size:0.8rem;color:var(--color-text-secondary)}
+.recog-group-title{
+  font-size:1.05rem;font-weight:700;
+  margin-bottom:1.125rem;color:var(--color-text-primary);
+  display:flex;align-items:center;gap:0.5rem;
+}
+
+/* ============================================================
+   SKILLS
+   ============================================================ */
+.skills-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem}
+.skill-group{
+  padding:1.625rem;
+  border:1px solid var(--color-border);
+  border-radius:var(--radius);
+  background:var(--color-bg-card);box-shadow:var(--shadow-sm);
+}
+.skill-group-title{
+  font-size:0.9rem;font-weight:700;
+  color:var(--color-text-primary);
+  margin-bottom:0.875rem;
+  display:flex;align-items:center;gap:0.4rem;
+}
+.skill-chips{display:flex;flex-wrap:wrap;gap:0.45rem}
+.skill-chip{
+  padding:0.3rem 0.7rem;border-radius:20px;
+  font-size:0.8rem;font-weight:500;
+  background:var(--color-bg-2);
+  color:var(--color-text-secondary);
+  border:1px solid var(--color-border);
+}
+
+/* ============================================================
+   자료실
+   ============================================================ */
+.archive-intro{
+  text-align:center;padding:1.5rem;
+  background:var(--color-accent-light);
+  border-radius:var(--radius);
+  margin-bottom:2.5rem;
+  border:1.5px dashed var(--color-accent);
+}
+.archive-intro p{color:var(--color-accent);font-size:0.925rem;font-weight:500}
+.archive-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.archive-card{
+  padding:1.875rem 1.5rem;
+  border:2px dashed var(--color-border);
+  border-radius:var(--radius);text-align:center;
+  color:var(--color-text-secondary);
+  transition:all 0.2s;background:var(--color-bg-card);
+}
+.archive-card:hover{
+  border-color:var(--color-accent);
+  color:var(--color-accent);
+  background:var(--color-accent-light);
+}
+.archive-icon{font-size:1.875rem;margin-bottom:0.65rem}
+.archive-cat{font-size:0.925rem;font-weight:700;margin-bottom:0.35rem}
+.archive-desc{font-size:0.8rem;opacity:0.8;line-height:1.5}
+.archive-coming{
+  display:inline-block;margin-top:0.65rem;
+  padding:0.18rem 0.6rem;
+  background:var(--color-border);
+  color:var(--color-text-light);
+  border-radius:20px;font-size:0.7rem;font-weight:600;
+}
+
+/* ============================================================
+   CONTACT
+   ============================================================ */
+.contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2.5rem}
+.contact-block{
+  display:flex;align-items:flex-start;gap:0.875rem;
+  padding:1.375rem;
+  border:1px solid var(--color-border);
+  border-radius:var(--radius);
+  background:var(--color-bg-card);box-shadow:var(--shadow-sm);
+}
+.contact-block-icon{
+  width:44px;height:44px;flex-shrink:0;
+  border-radius:10px;background:var(--color-accent-light);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;
+}
+.contact-block-label{
+  font-size:0.72rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:0.08em;
+  color:var(--color-text-light);margin-bottom:0.2rem;
+}
+.contact-block-value{font-size:0.9rem;font-weight:500;color:var(--color-text-primary)}
+.contact-block-value a:hover{color:var(--color-accent)}
+.contact-cta-row{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:0.5rem}
+
+/* BUTTONS */
+.btn{
+  display:inline-flex;align-items:center;gap:0.45rem;
+  padding:0.7rem 1.625rem;border-radius:8px;
+  font-size:0.925rem;font-weight:700;
+  font-family:inherit;cursor:pointer;border:none;
+  transition:all 0.2s;text-decoration:none;
+}
+.btn-primary{background:var(--color-accent);color:#fff}
+.btn-primary:hover{background:var(--color-accent-hover);transform:translateY(-1px)}
+.btn-outline{background:none;color:var(--color-accent);border:2px solid var(--color-accent)}
+.btn-outline:hover{background:var(--color-accent);color:#fff;transform:translateY(-1px)}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{
+  padding:2rem;text-align:center;
+  border-top:1px solid var(--color-border);
+  background:var(--color-bg);
+  color:var(--color-text-light);font-size:0.82rem;
+}
+footer a{color:var(--color-accent)}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:1024px){
+  .about-grid{grid-template-columns:250px 1fr;gap:2.5rem}
+  .edu-grid{grid-template-columns:repeat(2,1fr)}
+  .research-grid{grid-template-columns:repeat(2,1fr)}
+  .about-stats{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:768px){
+  .nav-links,.lang-toggle{display:none}
+  .hamburger{display:flex}
+  .about-grid{grid-template-columns:1fr}
+  .about-photo-wrap{position:static;max-width:220px;margin:0 auto}
+  .about-stats{grid-template-columns:repeat(2,1fr)}
+  .edu-grid,.research-grid{grid-template-columns:1fr}
+  .recognition-grid,.skills-grid{grid-template-columns:1fr}
+  .archive-grid{grid-template-columns:repeat(2,1fr)}
+  .contact-grid{grid-template-columns:1fr}
+  .pub-header{grid-template-columns:1fr}
+  section{padding:4rem 1.25rem}
+  #about{padding-top:calc(var(--nav-height) + 2rem)}
+}
+@media(max-width:480px){
+  .archive-grid{grid-template-columns:1fr}
+  .flowchart{flex-direction:column;align-items:flex-start}
+  .about-stats{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<nav id="nav">
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">Yoo</div>
+    <ul class="nav-links">
+      <li><a href="#about" class="i18n" data-en="About" data-kr="소개">About</a></li>
+      <li class="has-dropdown">
+        <button>
+          <span class="i18n" data-en="Study" data-kr="연구">Study</span>
+          <span class="dropdown-arrow">▾</span>
+        </button>
+        <div class="dropdown-menu">
+          <a href="#education" class="i18n" data-en="Education" data-kr="학력">Education</a>
+          <a href="#research" class="i18n" data-en="Research" data-kr="연구 분야">Research</a>
+          <a href="#publications" class="i18n" data-en="Publications" data-kr="논문">Publications</a>
+        </div>
+      </li>
+      <li><a href="#experience" class="i18n" data-en="Experience" data-kr="경력">Experience</a></li>
+      <li><a href="#archive" class="i18n" data-en="Archive" data-kr="자료실">Archive</a></li>
+      <li><a href="#contact" class="i18n" data-en="Contact" data-kr="연락처">Contact</a></li>
+    </ul>
+    <button class="lang-toggle" id="langBtn">한국어</button>
+    <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Overlay -->
+<div class="mobile-overlay" id="mobileOverlay">
+  <button class="mobile-close" id="mobileClose">✕</button>
+  <a href="#about" onclick="closeMobile()" class="i18n" data-en="About" data-kr="소개">About</a>
+  <div class="mobile-sub">
+    <a href="#education" onclick="closeMobile()" class="i18n" data-en="Education" data-kr="학력">Education</a>
+    <a href="#research" onclick="closeMobile()" class="i18n" data-en="Research" data-kr="연구 분야">Research</a>
+    <a href="#publications" onclick="closeMobile()" class="i18n" data-en="Publications" data-kr="논문">Publications</a>
+  </div>
+  <a href="#experience" onclick="closeMobile()" class="i18n" data-en="Experience" data-kr="경력">Experience</a>
+  <a href="#archive" onclick="closeMobile()" class="i18n" data-en="Archive" data-kr="자료실">Archive</a>
+  <a href="#contact" onclick="closeMobile()" class="i18n" data-en="Contact" data-kr="연락처">Contact</a>
+  <button class="lang-toggle" onclick="toggleLang();closeMobile();" id="mobileLangBtn" style="font-size:1.1rem;padding:0.6rem 1.5rem;margin-top:0.5rem">한국어</button>
+</div>
+
+<!-- ============================================================
+     ABOUT
+     ============================================================ -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-photo-wrap reveal">
+        <div class="about-photo">
+          <img src="dataset/profile.jpg" alt="Yeontaek Yoo">
+        </div>
+      </div>
+      <div class="about-content">
+        <p class="section-label i18n" data-en="About Me" data-kr="소개">About Me</p>
+        <h1 class="about-name">
+          Yeontaek Yoo
+          <span class="about-name-kr">(유연택)</span>
+        </h1>
+        <p class="about-title i18n"
+           data-en="Transportation Researcher · Transportation Planner"
+           data-kr="교통공학 연구자 · 교통계획가">
+          Transportation Researcher · Transportation Planner
+        </p>
+        <p class="about-bio reveal i18n"
+           data-en="PhD candidate in Civil Engineering at the University of Calgary, specializing in transit electrification, EV infrastructure planning, and transportation policy analysis. My research bridges data-driven modeling with real-world policy impact — from quantifying the environmental benefits of dynamic wireless charging to optimizing EV charging infrastructure placement on highways."
+           data-kr="캘거리 대학교 토목공학과 박사과정으로, 대중교통 전동화, 전기차 인프라 계획, 교통 정책 분석을 전문으로 연구합니다. 데이터 기반 모델링을 실제 정책과 연결하는 연구를 수행하며, 동적 무선충전의 환경 편익 정량화부터 고속도로 충전 인프라 최적 배치까지 다양한 주제를 다룹니다.">
+          PhD candidate in Civil Engineering at the University of Calgary, specializing in transit electrification, EV infrastructure planning, and transportation policy analysis. My research bridges data-driven modeling with real-world policy impact — from quantifying the environmental benefits of dynamic wireless charging to optimizing EV charging infrastructure placement on highways.
+        </p>
+        <blockquote class="about-quote reveal">
+          "Heaven helps those who help themselves."
+        </blockquote>
+        <div class="about-stats reveal">
+          <div class="stat-card">
+            <div class="stat-number">4</div>
+            <div class="stat-label i18n" data-en="Publications" data-kr="논문">Publications</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">3</div>
+            <div class="stat-label i18n" data-en="Awards" data-kr="수상">Awards</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">3+</div>
+            <div class="stat-label i18n" data-en="Yrs Research" data-kr="연구 경력">Yrs Research</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">5</div>
+            <div class="stat-label i18n" data-en="Presentations" data-kr="발표">Presentations</div>
+          </div>
+        </div>
+        <div class="about-contacts reveal">
+          <a class="contact-chip" href="mailto:yeontaek.yoo@ucalgary.ca">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            yeontaek.yoo@ucalgary.ca
+          </a>
+          <a class="contact-chip" href="tel:+13683999022">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 11.5 19.79 19.79 0 0 1 1.61 2.84 2 2 0 0 1 3.58 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            (+1) 368.399.9022
+          </a>
+          <a class="contact-chip" href="https://www.linkedin.com/in/YeontaekYoo" target="_blank">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            LinkedIn
+          </a>
+          <a class="contact-chip" href="https://www.academia.edu/Yeontaek.Yoo" target="_blank">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            Academia.edu
+          </a>
+          <a class="contact-chip" href="dataset/Awesome_CV (1).pdf" download>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span class="i18n" data-en="Download CV" data-kr="CV 다운로드">Download CV</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     EDUCATION
+     ============================================================ -->
+<section id="education">
+  <div class="section-inner">
+    <p class="section-label i18n" data-en="Academic Background" data-kr="학업 배경">Academic Background</p>
+    <h2 class="section-title i18n" data-en="Education" data-kr="학력">Education</h2>
+    <p class="section-desc i18n"
+       data-en="Academic training in civil and transportation engineering across three institutions in Canada and Korea."
+       data-kr="한국과 캐나다 3개 대학에서의 토목·교통공학 전공">
+      Academic training in civil and transportation engineering across three institutions in Canada and Korea.
+    </p>
+    <div class="edu-grid">
+      <div class="edu-card featured reveal">
+        <div class="edu-degree">Ph.D. Candidate</div>
+        <div class="edu-field i18n" data-en="Civil Engineering" data-kr="토목공학">Civil Engineering</div>
+        <div class="edu-school i18n" data-en="University of Calgary, Canada" data-kr="캐나다 캘거리 대학교">University of Calgary, Canada</div>
+        <div class="edu-year">Jan 2026 – Present</div>
+        <div class="edu-thesis i18n"
+             data-en="Focus: Transit electrification · EV infrastructure · Transportation policy"
+             data-kr="연구 주제: 대중교통 전동화 · 전기차 인프라 · 교통 정책">
+          Focus: Transit electrification · EV infrastructure · Transportation policy
+        </div>
+      </div>
+      <div class="edu-card reveal">
+        <div class="edu-degree">M.S.</div>
+        <div class="edu-field i18n" data-en="Transportation Engineering" data-kr="교통공학">Transportation Engineering</div>
+        <div class="edu-school i18n" data-en="University of Seoul, Korea" data-kr="서울시립대학교">University of Seoul, Korea</div>
+        <div class="edu-year">Mar 2022 – Feb 2024</div>
+        <div class="edu-thesis i18n"
+             data-en="Thesis: Dynamic wireless charging for EV activation and sustainability"
+             data-kr="논문: 전기차 활성화를 위한 동적 무선충전 연구">
+          Thesis: Dynamic wireless charging for EV activation and sustainability
+        </div>
+      </div>
+      <div class="edu-card reveal">
+        <div class="edu-degree">B.S.</div>
+        <div class="edu-field i18n" data-en="Civil Engineering" data-kr="토목공학">Civil Engineering</div>
+        <div class="edu-school i18n" data-en="Incheon National University, Korea" data-kr="인천대학교">Incheon National University, Korea</div>
+        <div class="edu-year">Mar 2016 – Feb 2022</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     RESEARCH
+     ============================================================ -->
+<section id="research">
+  <div class="section-inner">
+    <p class="section-label i18n" data-en="Research Focus" data-kr="연구 방향">Research Focus</p>
+    <h2 class="section-title i18n" data-en="Research Areas" data-kr="연구 분야">Research Areas</h2>
+    <p class="section-desc i18n"
+       data-en="Integrating transportation planning, data science, and environmental analysis to inform sustainable mobility policy."
+       data-kr="교통계획, 데이터 과학, 환경 분석을 통합하여 지속 가능한 모빌리티 정책을 연구합니다.">
+      Integrating transportation planning, data science, and environmental analysis to inform sustainable mobility policy.
+    </p>
+    <div class="research-grid">
+      <div class="research-card reveal">
+        <div class="research-icon">🔋</div>
+        <div class="research-title i18n" data-en="EV Infrastructure Planning" data-kr="전기차 인프라 계획">EV Infrastructure Planning</div>
+        <div class="research-desc i18n"
+             data-en="Optimizing highway charging station placement using Location-Allocation modeling, entropy weighting (TOPSIS), and traffic assignment. Examining infrastructure demand under 10/30/50% EV penetration scenarios."
+             data-kr="위치-배분 모델링, 엔트로피 가중치(TOPSIS), 교통 배분을 활용한 고속도로 충전소 최적 배치. 전기차 10/30/50% 보급률 시나리오별 인프라 수요 분석.">
+          Optimizing highway charging station placement using Location-Allocation modeling, entropy weighting (TOPSIS), and traffic assignment. Examining infrastructure demand under 10/30/50% EV penetration scenarios.
+        </div>
+        <div class="research-tags">
+          <span class="tag">Location-Allocation</span>
+          <span class="tag">TOPSIS</span>
+          <span class="tag">Traffic Assignment</span>
+          <span class="tag">GIS</span>
+        </div>
+      </div>
+      <div class="research-card reveal" style="transition-delay:0.1s">
+        <div class="research-icon">📡</div>
+        <div class="research-title i18n" data-en="Dynamic Wireless Charging" data-kr="동적 무선충전">Dynamic Wireless Charging</div>
+        <div class="research-desc i18n"
+             data-en="Assessing modal shift and environmental impact of DWCS using stated-preference surveys and discrete choice models on the Seoul road network. Quantified: +14% EV market share, 140.82B KRW air pollution reduction (10 yr)."
+             data-kr="서울 도로 네트워크에서 진술 선호도 조사 및 이산 선택 모델로 DWCS의 수단 전환·환경 효과 분석. 주요 결과: 전기차 시장점유율 +14%, 10년간 1,408억 원 대기오염 저감.">
+          Assessing modal shift and environmental impact of DWCS using stated-preference surveys and discrete choice models on the Seoul road network. Quantified: +14% EV market share, 140.82B KRW air pollution reduction (10 yr).
+        </div>
+        <div class="research-tags">
+          <span class="tag">SP Survey</span>
+          <span class="tag">Discrete Choice</span>
+          <span class="tag">DWCS</span>
+          <span class="tag">Network Simulation</span>
+        </div>
+      </div>
+      <div class="research-card reveal" style="transition-delay:0.2s">
+        <div class="research-icon">📊</div>
+        <div class="research-title i18n" data-en="Transportation Policy Analysis" data-kr="교통 정책 분석">Transportation Policy Analysis</div>
+        <div class="research-desc i18n"
+             data-en="Evaluating EV subsidy and incentive policies through behavioral modeling. Analyzed EV competitiveness under varying operating costs, estimating 4.8–11.0B KRW/year in societal air pollution reduction benefits."
+             data-kr="행동 모델링을 통한 전기차 보조금·인센티브 정책 평가. 운영 비용 변화에 따른 전기차 경쟁력을 분석하고 연간 48~110억 원의 사회적 대기오염 저감 편익 추정.">
+          Evaluating EV subsidy and incentive policies through behavioral modeling. Analyzed EV competitiveness under varying operating costs, estimating 4.8–11.0B KRW/year in societal air pollution reduction benefits.
+        </div>
+        <div class="research-tags">
+          <span class="tag">Binary Logit</span>
+          <span class="tag">Policy Evaluation</span>
+          <span class="tag">Cost-Benefit</span>
+          <span class="tag">EV Subsidy</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PUBLICATIONS
+     ============================================================ -->
+<section id="publications">
+  <div class="section-inner">
+    <p class="section-label i18n" data-en="Peer-Reviewed Work" data-kr="학술 논문">Peer-Reviewed Work</p>
+    <h2 class="section-title i18n" data-en="Publications" data-kr="논문 목록">Publications</h2>
+    <p class="section-desc i18n"
+       data-en="Published in international and domestic journals on EV charging infrastructure, wireless charging systems, and transportation policy."
+       data-kr="전기차 충전 인프라, 무선충전 시스템, 교통 정책에 관한 국내외 학술지 게재 논문">
+      Published in international and domestic journals on EV charging infrastructure, wireless charging systems, and transportation policy.
+    </p>
+    <div class="pub-filter">
+      <button class="active" onclick="filterPubs(this,'all')">
+        <span class="i18n" data-en="All" data-kr="전체">All</span>
+      </button>
+      <button onclick="filterPubs(this,'first')">
+        <span class="i18n" data-en="First Author" data-kr="제1저자">First Author</span>
+      </button>
+      <button onclick="filterPubs(this,'co')">
+        <span class="i18n" data-en="Co-Author" data-kr="공저">Co-Author</span>
+      </button>
+    </div>
+    <div class="pub-list">
+
+      <!-- ── Paper 1 · 2025 ICE ── -->
+      <div class="pub-item reveal" data-author="first">
+        <div class="pub-header">
+          <div>
+            <span class="pub-year-badge">2025</span>
+            <div class="pub-title i18n"
+                 data-en="Designing Next-Generation Charging Systems to Enhance Electric Vehicle Highway Convenience"
+                 data-kr="전기차 고속도로 편의성 향상을 위한 차세대 충전 시스템 설계">
+              Designing Next-Generation Charging Systems to Enhance Electric Vehicle Highway Convenience
+            </div>
+            <div class="pub-authors"><strong>Yoo, Y.</strong>, Kim, J., &amp; Lee, S.</div>
+            <div class="pub-journal">ICE — Municipal Engineer (2025)</div>
+          </div>
+          <span class="pub-role first i18n" data-en="First Author" data-kr="제1저자">First Author</span>
+        </div>
+        <div class="pub-body">
+          <div class="pub-framework">
+            <div class="framework-title i18n" data-en="Research Framework" data-kr="연구 방법론">Research Framework</div>
+            <div class="flowchart">
+              <span class="fc-box">Traffic &amp; OD<br>Data Input</span>
+              <span class="fc-arrow">→</span>
+              <span class="fc-box">Location-<br>Allocation</span>
+              <span class="fc-arrow">→</span>
+              <span class="fc-box">Entropy /<br>TOPSIS</span>
+              <span class="fc-arrow">→</span>
+              <span class="fc-box highlight">Traffic<br>Assignment</span>
+              <span class="fc-arrow">→</span>
+              <span class="fc-box">Scenarios<br><small>10 / 30 / 50% EV</small></span>
+              <span class="fc-arrow">→</span>
+              <span class="fc-box">Optimal<br>Station Sites</span>
+              <div class="fc-note i18n"
+                   data-en="Highway network-level approach: multi-criteria decision analysis + traffic simulation to find optimal fast-charging locations."
+                   data-kr="다기준 의사결정 분석과 교통 시뮬레이션을 결합해 고속도로 급속충전소 최적 위치를 도출하는 네트워크 수준 접근법.">
+                Highway network-level approach: multi-criteria decision analysis + traffic simulation to find optimal fast-charging locations.
+              </div>
+            </div>
+          </div>
+          <div class="pub-links">
+            <a class="pub-link doi" href="https://doi.org/10.1680/jmuen.24.00062" target="_blank">
+              🔗 DOI: 10.1680/jmuen.24.00062
+            </a>
+            <a class="pub-link" href="https://scholar.google.com/scholar?q=10.1680/jmuen.24.00062" target="_blank">
+              Google Scholar
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Paper 2 · 2024 Clean Tech ── -->
+      <div class="pub-item reveal" data-author="first">
+        <div class="pub-header">
+          <div>
+            <span class="pub-year-badge">2024</span>
+            <div class="pub-title i18n"
+                 data-en="The Effect of Dynamic Wireless Charging Systems on Electric Vehicle Activation and Sustainability"
+                 data-kr="동적 무선충전 시스템이 전기차 활성화 및 지속 가능성에 미치는 영향">
+              The Effect of Dynamic Wireless Charging Systems on Electric Vehicle Activation and Sustainability
+            </div>
+            <div class="pub-authors"><strong>Yoo, Y.</strong>, Kim, J.</div>
+            <div class="pub-journal">Clean Technologies and Environmental Policy (2024)</div>
+          </div>
+          <span class="pub-role first i18n" data-en="First Author" data-kr="제1저자">First Author</span>
+        </div>
+        <div class="pub-body">
+          <div class="pub-framework">
+            <div class="framework-title i18n" data-en="Research Framework" data-kr="연구 방법론">Research Framework</div>
+            <div class="flowchart">
+              <span class="fc-box">SP Survey<br><small>282 respondents</small></span>
+              <span class="fc-arrow">→</span>
+              <span class="fc-box highlight">Discrete Choice<br>Model</span>
+              <span class="fc-arrow">→</span>
+              <span class="fc-box">Traffic Assignment<br><small>Seoul network</small></span>
+              <span class="fc-arrow">→</span>
+              <span class="fc-box">Scenarios<br><small>Pessimism/Base/<br>Optimism</small></span>
+              <span class="fc-arrow">→</span>
+              <span class="fc-box">EV Market Share<br>+ Green Benefit</span>
+              <div class="fc-note i18n"
+                   data-en="Key result: +14% EV market share; 140.82B KRW air pollution reduction over 10 years (Seoul network)."
+                   data-kr="주요 결과: 전기차 시장점유율 +14%; 서울 네트워크 기준 10년간 1,408억 원 대기오염 저감 편익.">
+                Key result: +14% EV market share; 140.82B KRW air pollution reduction over 10 years (Seoul network).
+              </div>
+            </div>
+          </div>
+          <div class="pub-links">
+            <a class="pub-link doi" href="https://doi.org/10.1007/s10098-024-03043-2" target="_blank">
+              🔗 DOI: 10.1007/s10098-024-03043-2
+            </a>
+            <a class="pub-link" href="https://scholar.google.com/scholar?q=10.1007/s10098-024-03043-2" target="_blank">
+              Google Scholar
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Paper 3 · 2023 CET ── -->
+      <div class="pub-item reveal" data-author="first">
+        <div class="pub-header">
+          <div>
+            <span class="pub-year-badge">2023</span>
+            <div class="pub-title i18n"
+                 data-en="Electric Vehicle Competitiveness and Environmental Effects of Subsidy"
+                 data-kr="전기차 경쟁력 및 보조금의 환경적 효과">
+              Electric Vehicle Competitiveness and Environmental Effects of Subsidy
+            </div>
+            <div class="pub-authors"><strong>Yoo, Y.</strong>, Park, S., Kim, J.</div>
+            <div class="pub-journal">Chemical Engineering Transactions, Vol. 106 (2023)</div>
+          </div>
+          <span class="pub-role first i18n" data-en="First Author" data-kr="제1저자">First Author</span>
+        </div>
+        <div class="pub-body">
+          <div class="pub-framework">
+            <div class="framework-title i18n" data-en="Research Framework" data-kr="연구 방법론">Research Framework</div>
+            <div class="flowchart">
+              <span class="fc-box">SP Survey<br><small>855 samples</small></span>
+              <span class="fc-arrow">→</span>
+              <span class="fc-box highlight">Binary Logit<br>Model</span>
+              <span class="fc-arrow">→</span>
+              <span class="fc-box">3 Operating<br>Cost Scenarios</span>
+              <span class="fc-arrow">→</span>
+              <span class="fc-box">EV Market<br>Share Forecast</span>
+              <span class="fc-arrow">→</span>
+              <span class="fc-box">Environmental<br>Benefits (KRW)</span>
+              <div class="fc-note i18n"
+                   data-en="Key result: 4.8–11.0B KRW/year air pollution reduction through EV subsidy programs."
+                   data-kr="주요 결과: 전기차 보조금 정책으로 연간 48~110억 원의 대기오염 저감 효과.">
+                Key result: 4.8–11.0B KRW/year air pollution reduction through EV subsidy programs.
+              </div>
+            </div>
+          </div>
+          <div class="pub-links">
+            <a class="pub-link doi" href="https://doi.org/10.3303/CET23106030" target="_blank">
+              🔗 DOI: 10.3303/CET23106030
+            </a>
+            <a class="pub-link" href="https://scholar.google.com/scholar?q=10.3303/CET23106030" target="_blank">
+              Google Scholar
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Paper 4 · 2023 JKST ── -->
+      <div class="pub-item reveal" data-author="co">
+        <div class="pub-header">
+          <div>
+            <span class="pub-year-badge">2023</span>
+            <div class="pub-title i18n"
+                 data-en="Estimation of Leisure Behavior Using Unstructured Data: Seoul City Wall Trail"
+                 data-kr="비정형 데이터를 활용한 여가 행태 추정: 서울 성곽길 사례">
+              Estimation of Leisure Behavior Using Unstructured Data: Seoul City Wall Trail
+            </div>
+            <div class="pub-authors">Park, S., <strong>Yoo, Y.</strong>, Kim, J.</div>
+            <div class="pub-journal">Journal of the Korean Society of Transportation (2023)</div>
+          </div>
+          <span class="pub-role co i18n" data-en="Co-Author" data-kr="공저자">Co-Author</span>
+        </div>
+        <div class="pub-body">
+          <div class="pub-framework">
+            <div class="framework-title i18n" data-en="Research Framework" data-kr="연구 방법론">Research Framework</div>
+            <div class="flowchart">
+              <span class="fc-box">Unstructured Data<br><small>SNS / Reviews</small></span>
+              <span class="fc-arrow">→</span>
+              <span class="fc-box highlight">Text Mining<br>&amp; NLP</span>
+              <span class="fc-arrow">→</span>
+              <span class="fc-box">Keyword &amp;<br>Sentiment Analysis</span>
+              <span class="fc-arrow">→</span>
+              <span class="fc-box">Leisure Behavior<br>Estimation</span>
+              <span class="fc-arrow">→</span>
+              <span class="fc-box">Seoul City Wall<br>Trail Insights</span>
+              <div class="fc-note i18n"
+                   data-en="Applied NLP and text mining to SNS data to estimate pedestrian leisure behavior patterns on urban trail routes."
+                   data-kr="SNS 텍스트 마이닝·NLP를 통해 도시 둘레길 보행자의 여가 행태 패턴을 추정한 연구.">
+                Applied NLP and text mining to SNS data to estimate pedestrian leisure behavior patterns on urban trail routes.
+              </div>
+            </div>
+          </div>
+          <div class="pub-links">
+            <a class="pub-link doi" href="https://scholar.google.com/scholar?q=Estimation+Leisure+Behavior+Unstructured+Data+Seoul+City+Wall" target="_blank">
+              Google Scholar
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /pub-list -->
+  </div>
+</section>
+
+<!-- ============================================================
+     EXPERIENCE
+     ============================================================ -->
+<section id="experience">
+  <div class="section-inner">
+    <p class="section-label i18n" data-en="Work History" data-kr="경력 사항">Work History</p>
+    <h2 class="section-title i18n" data-en="Experience" data-kr="경력">Experience</h2>
+    <p class="section-desc i18n"
+       data-en="Research and academic experience spanning Canada and Korea."
+       data-kr="한국과 캐나다에서의 연구 및 학술 경력">
+      Research and academic experience spanning Canada and Korea.
+    </p>
+    <div class="timeline">
+      <div class="timeline-item reveal">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Jan 2026 – Present</div>
+        <div class="timeline-role i18n" data-en="Graduate Research Assistant" data-kr="대학원 연구조교">Graduate Research Assistant</div>
+        <div class="timeline-org i18n" data-en="University of Calgary — Dept. of Civil Engineering" data-kr="캘거리 대학교 토목공학과">University of Calgary — Dept. of Civil Engineering</div>
+        <ul class="timeline-bullets">
+          <li class="i18n" data-en="Conducting PhD research on transit electrification and EV infrastructure optimization." data-kr="대중교통 전동화 및 전기차 인프라 최적화 관련 박사 연구 수행.">Conducting PhD research on transit electrification and EV infrastructure optimization.</li>
+          <li class="i18n" data-en="Recipient of the 2026 International Graduate Tuition Award." data-kr="2026 국제 대학원생 등록금 장학금 수상.">Recipient of the 2026 International Graduate Tuition Award.</li>
+        </ul>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Mar 2022 – Feb 2024</div>
+        <div class="timeline-role i18n" data-en="Graduate Researcher" data-kr="대학원 연구원">Graduate Researcher</div>
+        <div class="timeline-org i18n" data-en="Transportation Planning Lab, University of Seoul" data-kr="서울시립대학교 교통계획연구실">Transportation Planning Lab, University of Seoul</div>
+        <ul class="timeline-bullets">
+          <li class="i18n" data-en="Led research on EV adoption behavior and DWCS infrastructure planning." data-kr="전기차 수용 행태 및 DWCS 인프라 계획 연구 주도.">Led research on EV adoption behavior and DWCS infrastructure planning.</li>
+          <li class="i18n" data-en="Developed discrete choice models and conducted large-scale SP surveys (282 & 855 respondents)." data-kr="이산 선택 모델 개발 및 대규모 SP 설문 수행 (282명, 855명).">Developed discrete choice models and conducted large-scale SP surveys (282 &amp; 855 respondents).</li>
+          <li class="i18n" data-en="Published 3 peer-reviewed papers; presented at 3 international conferences." data-kr="학술지 논문 3편 게재, 국제 학회 3회 발표.">Published 3 peer-reviewed papers; presented at 3 international conferences.</li>
+          <li class="i18n" data-en="Won Best Presenter Award at ICLCA (2023) and K-ITS (2025)." data-kr="ICLCA(2023), K-ITS(2025) 최우수 발표상 수상.">Won Best Presenter Award at ICLCA (2023) and K-ITS (2025).</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item reveal">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Nov 2024 – Nov 2025</div>
+        <div class="timeline-role i18n" data-en="Researcher" data-kr="연구원">Researcher</div>
+        <div class="timeline-org i18n" data-en="Korea Transport Institute (KOTI) — Sejong, S. Korea" data-kr="한국교통연구원(KOTI) — 세종">Korea Transport Institute (KOTI) — Sejong, S. Korea</div>
+        <ul class="timeline-bullets">
+          <li class="i18n"
+              data-en="Conducted transportation policy and infrastructure evaluation studies on national road networks, regional accessibility, and strategic transport planning."
+              data-kr="국가 도로망, 지역 접근성 및 전략적 교통계획에 관한 교통 정책·인프라 평가 연구 수행.">
+            Conducted transportation policy and infrastructure evaluation studies on national road networks, regional accessibility, and strategic transport planning.
+          </li>
+          <li class="i18n"
+              data-en="Developed quantitative evaluation frameworks for major transportation projects, incorporating socio-economic, regional development, and policy impact indicators."
+              data-kr="사회경제적, 지역발전, 정책 영향 지표를 포함한 주요 교통사업 정량적 평가 체계 개발.">
+            Developed quantitative evaluation frameworks for major transportation projects, incorporating socio-economic, regional development, and policy impact indicators.
+          </li>
+          <li class="i18n"
+              data-en="Analyzed traffic demand patterns and network performance using OD matrices, GIS-based spatial analysis, and transportation modeling tools."
+              data-kr="OD 매트릭스, GIS 기반 공간 분석 및 교통 모델링 도구를 활용한 교통 수요 패턴 및 네트워크 성능 분석.">
+            Analyzed traffic demand patterns and network performance using OD matrices, GIS-based spatial analysis, and transportation modeling tools.
+          </li>
+          <li class="i18n"
+              data-en="Contributed to national transportation planning reports, feasibility studies, and policy recommendation documents."
+              data-kr="국가 교통계획 보고서, 타당성 조사 및 정책 권고 문서 작성에 기여.">
+            Contributed to national transportation planning reports, feasibility studies, and policy recommendation documents.
+          </li>
+        </ul>
+      </div>
+
+      <div class="timeline-item reveal">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Apr 2022 – Aug 2022</div>
+        <div class="timeline-role i18n" data-en="Staff Engineer" data-kr="사원">Staff Engineer</div>
+        <div class="timeline-org i18n" data-en="Dong-sung Engineering — Seoul, S. Korea" data-kr="(주)동성엔지니어링 — 서울">Dong-sung Engineering — Seoul, S. Korea</div>
+        <ul class="timeline-bullets">
+          <li class="i18n"
+              data-en="Managed route map production for the Feasibility Study of the Northeast Cambodia Provincial Road Improvement Project."
+              data-kr="캄보디아 북동부 지방도 개선 사업 타당성 조사의 노선도 제작 관리.">
+            Managed route map production for the Feasibility Study of the Northeast Cambodia Provincial Road Improvement Project.
+          </li>
+          <li class="i18n"
+              data-en="Conducted detailed design and review of various road types."
+              data-kr="다양한 도로 유형의 상세 설계 및 검토 수행.">
+            Conducted detailed design and review of various road types.
+          </li>
+          <li class="i18n"
+              data-en="Resolved conflicts between the local government and residents through effective facilitation during community meetings."
+              data-kr="지역 주민 회의에서 효과적인 조정을 통해 지방정부와 주민 간의 갈등 해소.">
+            Resolved conflicts between the local government and residents through effective facilitation during community meetings.
+          </li>
+        </ul>
+      </div>
+
+      <div class="timeline-item reveal">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Jun 2021 – Aug 2021</div>
+        <div class="timeline-role i18n" data-en="Research Intern" data-kr="연구 인턴">Research Intern</div>
+        <div class="timeline-org i18n"
+             data-en="International Center for Urban Water Hydroinformatics Research &amp; Innovation — Incheon, S. Korea"
+             data-kr="도시물순환 하이드로인포매틱스 연구혁신센터 — 인천">
+          International Center for Urban Water Hydroinformatics Research &amp; Innovation — Incheon, S. Korea
+        </div>
+        <ul class="timeline-bullets">
+          <li class="i18n"
+              data-en="Investigated domestic and foreign technology status on Digital twin-based water and sewage pipe network operation technology."
+              data-kr="디지털 트윈 기반 상·하수도 관망 운영 기술의 국내외 기술 현황 조사.">
+            Investigated domestic and foreign technology status on Digital twin-based water and sewage pipe network operation technology.
+          </li>
+          <li class="i18n"
+              data-en="Developed sewage piped network automation with developers through error reviewing and correction."
+              data-kr="개발자들과 협력하여 오류 검토 및 수정을 통한 하수도 관망 자동화 개발.">
+            Developed sewage piped network automation with developers through error reviewing and correction.
+          </li>
+          <li class="i18n"
+              data-en="Collected and classified road overload vehicles for image deep learning datasets."
+              data-kr="이미지 딥러닝 데이터셋을 위한 도로 과적 차량 수집 및 분류.">
+            Collected and classified road overload vehicles for image deep learning datasets.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     RECOGNITION
+     ============================================================ -->
+<section id="recognition">
+  <div class="section-inner">
+    <p class="section-label i18n" data-en="Honors & Achievements" data-kr="수상 및 성과">Honors &amp; Achievements</p>
+    <h2 class="section-title i18n" data-en="Recognition" data-kr="수상">Recognition</h2>
+    <div class="recognition-grid">
+      <div>
+        <div class="recog-group-title">🏆 <span class="i18n" data-en="Awards" data-kr="수상">Awards</span></div>
+        <div class="recog-list">
+          <div class="recog-item reveal">
+            <div class="recog-icon">🎓</div>
+            <div>
+              <div class="recog-year">2026</div>
+              <div class="recog-title i18n" data-en="International Graduate Tuition Award" data-kr="국제 대학원생 등록금 장학금">International Graduate Tuition Award</div>
+              <div class="recog-org">University of Calgary</div>
+            </div>
+          </div>
+          <div class="recog-item reveal">
+            <div class="recog-icon">🥇</div>
+            <div>
+              <div class="recog-year">2025</div>
+              <div class="recog-title i18n" data-en="Best Presenter Award" data-kr="최우수 발표상">Best Presenter Award</div>
+              <div class="recog-org">K-ITS Annual Conference</div>
+            </div>
+          </div>
+          <div class="recog-item reveal">
+            <div class="recog-icon">🏙️</div>
+            <div>
+              <div class="recog-year">2023</div>
+              <div class="recog-title i18n" data-en="Smart City Grand Prize" data-kr="스마트 도시 대상">Smart City Grand Prize</div>
+              <div class="recog-org">University of Seoul</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="recog-group-title">🎤 <span class="i18n" data-en="Conference Presentations" data-kr="학술 발표">Conference Presentations</span></div>
+        <div class="recog-list">
+          <div class="recog-item reveal">
+            <div class="recog-icon">📢</div>
+            <div>
+              <div class="recog-year">2025</div>
+              <div class="recog-title">K-ITS Annual Conference</div>
+              <div class="recog-org i18n" data-en="Best Presenter Award" data-kr="최우수 발표상">Best Presenter Award</div>
+            </div>
+          </div>
+          <div class="recog-item reveal">
+            <div class="recog-icon">📢</div>
+            <div>
+              <div class="recog-year">2023</div>
+              <div class="recog-title">ICLCA International Conference</div>
+              <div class="recog-org i18n" data-en="Best Presenter Award" data-kr="최우수 발표상">Best Presenter Award</div>
+            </div>
+          </div>
+          <div class="recog-item reveal">
+            <div class="recog-icon">📢</div>
+            <div>
+              <div class="recog-year">2023</div>
+              <div class="recog-title i18n" data-en="Korean Society of Transportation Conference" data-kr="대한교통학회 학술대회">Korean Society of Transportation Conference</div>
+              <div class="recog-org i18n" data-en="Oral Presentation" data-kr="구두 발표">Oral Presentation</div>
+            </div>
+          </div>
+          <div class="recog-item reveal">
+            <div class="recog-icon">📢</div>
+            <div>
+              <div class="recog-year">2023</div>
+              <div class="recog-title i18n" data-en="Smart City Competition" data-kr="스마트시티 경진대회">Smart City Competition</div>
+              <div class="recog-org i18n" data-en="Grand Prize — University of Seoul" data-kr="대상 — 서울시립대학교">Grand Prize — University of Seoul</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SKILLS
+     ============================================================ -->
+<section id="skills">
+  <div class="section-inner">
+    <p class="section-label i18n" data-en="Competencies" data-kr="역량">Competencies</p>
+    <h2 class="section-title i18n" data-en="Skills" data-kr="보유 기술">Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-group reveal">
+        <div class="skill-group-title">📐 <span class="i18n" data-en="Transportation Modeling" data-kr="교통 모델링">Transportation Modeling</span></div>
+        <div class="skill-chips">
+          <span class="skill-chip">Traffic Assignment</span>
+          <span class="skill-chip">Discrete Choice</span>
+          <span class="skill-chip">SP Survey Design</span>
+          <span class="skill-chip">OD Matrix</span>
+          <span class="skill-chip">Location-Allocation</span>
+          <span class="skill-chip">MCDM / TOPSIS</span>
+        </div>
+      </div>
+      <div class="skill-group reveal" style="transition-delay:0.1s">
+        <div class="skill-group-title">💻 <span class="i18n" data-en="Software & Tools" data-kr="소프트웨어">Software &amp; Tools</span></div>
+        <div class="skill-chips">
+          <span class="skill-chip">Python</span>
+          <span class="skill-chip">R</span>
+          <span class="skill-chip">TransCAD</span>
+          <span class="skill-chip">ArcGIS</span>
+          <span class="skill-chip">VISSIM</span>
+          <span class="skill-chip">SPSS</span>
+          <span class="skill-chip">Excel / VBA</span>
+        </div>
+      </div>
+      <div class="skill-group reveal" style="transition-delay:0.2s">
+        <div class="skill-group-title">🔬 <span class="i18n" data-en="Research Methods" data-kr="연구 방법론">Research Methods</span></div>
+        <div class="skill-chips">
+          <span class="skill-chip">Stated Preference</span>
+          <span class="skill-chip">Scenario Analysis</span>
+          <span class="skill-chip">Network Simulation</span>
+          <span class="skill-chip">Logit / Probit</span>
+          <span class="skill-chip">Text Mining</span>
+          <span class="skill-chip">Cost-Benefit Analysis</span>
+        </div>
+      </div>
+      <div class="skill-group reveal" style="transition-delay:0.3s">
+        <div class="skill-group-title">🌏 <span class="i18n" data-en="Languages" data-kr="언어">Languages</span></div>
+        <div class="skill-chips">
+          <span class="skill-chip i18n" data-en="Korean (Native)" data-kr="한국어 (모국어)">Korean (Native)</span>
+          <span class="skill-chip i18n" data-en="English (Professional)" data-kr="영어 (전문 업무)">English (Professional)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     자료실
+     ============================================================ -->
+<section id="archive">
+  <div class="section-inner">
+    <p class="section-label i18n" data-en="Archive" data-kr="자료실">Archive</p>
+    <h2 class="section-title i18n" data-en="Resource Archive" data-kr="자료실">Resource Archive</h2>
+    <p class="section-desc i18n"
+       data-en="A curated space for research materials, datasets, presentations, and notes. Content will be added progressively as research develops."
+       data-kr="연구 자료, 데이터셋, 발표 자료, 노트를 모아두는 공간입니다. 연구 진행에 따라 순차적으로 업로드될 예정입니다.">
+      A curated space for research materials, datasets, presentations, and notes. Content will be added progressively as research develops.
+    </p>
+    <div class="archive-intro">
+      <p class="i18n"
+         data-en="🚧 Under construction — research materials will be uploaded as they become available."
+         data-kr="🚧 준비 중입니다. 연구 자료가 준비되는 대로 순차적으로 업로드될 예정입니다.">
+        🚧 Under construction — research materials will be uploaded as they become available.
+      </p>
+    </div>
+    <div class="archive-grid">
+      <div class="archive-card reveal">
+        <div class="archive-icon">📄</div>
+        <div class="archive-cat i18n" data-en="Research Reports" data-kr="연구 보고서">Research Reports</div>
+        <div class="archive-desc i18n" data-en="Technical reports and working papers" data-kr="기술 보고서 및 워킹 페이퍼">Technical reports and working papers</div>
+        <span class="archive-coming">Coming Soon</span>
+      </div>
+      <div class="archive-card reveal" style="transition-delay:0.1s">
+        <div class="archive-icon">📊</div>
+        <div class="archive-cat i18n" data-en="Datasets" data-kr="데이터셋">Datasets</div>
+        <div class="archive-desc i18n" data-en="Survey data and processed traffic datasets" data-kr="설문 데이터 및 교통 데이터셋">Survey data and processed traffic datasets</div>
+        <span class="archive-coming">Coming Soon</span>
+      </div>
+      <div class="archive-card reveal" style="transition-delay:0.2s">
+        <div class="archive-icon">🎞️</div>
+        <div class="archive-cat i18n" data-en="Presentations" data-kr="발표 자료">Presentations</div>
+        <div class="archive-desc i18n" data-en="Conference slides and seminar materials" data-kr="학회 발표 슬라이드 및 세미나 자료">Conference slides and seminar materials</div>
+        <span class="archive-coming">Coming Soon</span>
+      </div>
+      <div class="archive-card reveal" style="transition-delay:0.3s">
+        <div class="archive-icon">📓</div>
+        <div class="archive-cat i18n" data-en="Research Notes" data-kr="연구 노트">Research Notes</div>
+        <div class="archive-desc i18n" data-en="Methodology notes and literature summaries" data-kr="방법론 노트 및 문헌 정리">Methodology notes and literature summaries</div>
+        <span class="archive-coming">Coming Soon</span>
+      </div>
+      <div class="archive-card reveal" style="transition-delay:0.4s">
+        <div class="archive-icon">💻</div>
+        <div class="archive-cat i18n" data-en="Code & Scripts" data-kr="코드 및 스크립트">Code &amp; Scripts</div>
+        <div class="archive-desc i18n" data-en="Python / R analysis scripts and models" data-kr="Python / R 분석 스크립트 및 모델">Python / R analysis scripts and models</div>
+        <span class="archive-coming">Coming Soon</span>
+      </div>
+      <div class="archive-card reveal" style="transition-delay:0.5s">
+        <div class="archive-icon">🗺️</div>
+        <div class="archive-cat i18n" data-en="GIS Maps" data-kr="GIS 지도">GIS Maps</div>
+        <div class="archive-desc i18n" data-en="Spatial analysis maps and visualizations" data-kr="공간 분석 지도 및 시각화">Spatial analysis maps and visualizations</div>
+        <span class="archive-coming">Coming Soon</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CONTACT
+     ============================================================ -->
+<section id="contact">
+  <div class="section-inner">
+    <p class="section-label i18n" data-en="Get In Touch" data-kr="연락하기">Get In Touch</p>
+    <h2 class="section-title i18n" data-en="Contact" data-kr="연락처">Contact</h2>
+    <p class="section-desc i18n"
+       data-en="Open to collaboration, research inquiries, and networking in transportation research and EV planning."
+       data-kr="교통공학 연구 및 전기차 계획 관련 협력, 연구 문의, 네트워킹에 언제든지 연락주세요.">
+      Open to collaboration, research inquiries, and networking in transportation research and EV planning.
+    </p>
+    <div class="contact-cta-row">
+      <a class="btn btn-primary" href="mailto:yeontaek.yoo@ucalgary.ca">
+        ✉️ <span class="i18n" data-en="Send Email" data-kr="이메일 보내기">Send Email</span>
+      </a>
+      <a class="btn btn-outline" href="dataset/Awesome_CV (1).pdf" download>
+        ⬇️ <span class="i18n" data-en="Download CV" data-kr="CV 다운로드">Download CV</span>
+      </a>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-block reveal">
+        <div class="contact-block-icon">✉️</div>
+        <div>
+          <div class="contact-block-label i18n" data-en="Email" data-kr="이메일">Email</div>
+          <div class="contact-block-value">
+            <a href="mailto:yeontaek.yoo@ucalgary.ca">yeontaek.yoo@ucalgary.ca</a>
+          </div>
+        </div>
+      </div>
+      <div class="contact-block reveal" style="transition-delay:0.1s">
+        <div class="contact-block-icon">📍</div>
+        <div>
+          <div class="contact-block-label i18n" data-en="Location" data-kr="위치">Location</div>
+          <div class="contact-block-value i18n" data-en="Calgary, AB, Canada" data-kr="캐나다 앨버타주 캘거리">Calgary, AB, Canada</div>
+        </div>
+      </div>
+      <div class="contact-block reveal" style="transition-delay:0.2s">
+        <div class="contact-block-icon">🎓</div>
+        <div>
+          <div class="contact-block-label i18n" data-en="Affiliation" data-kr="소속">Affiliation</div>
+          <div class="contact-block-value i18n" data-en="University of Calgary" data-kr="캘거리 대학교">University of Calgary</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  <p>
+    © 2026 Yeontaek Yoo &nbsp;·&nbsp; Built with HTML / CSS / JS &nbsp;·&nbsp;
+    <a href="mailto:yeontaek.yoo@ucalgary.ca">yeontaek.yoo@ucalgary.ca</a>
+  </p>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+/* ---------- Language Toggle ---------- */
+let lang = localStorage.getItem('lang') || 'en';
+
+function applyLang(l) {
+  lang = l;
+  localStorage.setItem('lang', l);
+  document.body.classList.toggle('lang-kr', l === 'kr');
+  document.querySelectorAll('.i18n').forEach(el => {
+    if (el.dataset[l] !== undefined) el.textContent = el.dataset[l];
+  });
+  const label = l === 'en' ? '한국어' : 'English';
+  document.getElementById('langBtn').textContent = label;
+  document.getElementById('mobileLangBtn').textContent = label;
+}
+
+function toggleLang() { applyLang(lang === 'en' ? 'kr' : 'en'); }
+
+document.getElementById('langBtn').addEventListener('click', toggleLang);
+applyLang(lang); // init on load
+
+/* ---------- Nav Scroll Behavior ---------- */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+  highlightNav();
+}, { passive: true });
+
+function highlightNav() {
+  const ids = ['about','education','research','publications','experience','archive','contact'];
+  let current = 'about';
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && window.scrollY >= el.offsetTop - 90) current = id;
+  });
+  document.querySelectorAll('.nav-links a[href^="#"]').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+}
+
+/* ---------- Smooth Scroll ---------- */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href').slice(1);
+    const target = document.getElementById(id);
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
+
+/* ---------- Scroll Reveal ---------- */
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+/* ---------- Publication Filter ---------- */
+function filterPubs(btn, filter) {
+  document.querySelectorAll('.pub-filter button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.pub-item').forEach(item => {
+    const show = filter === 'all' || item.dataset.author === filter;
+    item.style.display = show ? '' : 'none';
+  });
+}
+
+/* ---------- Mobile Hamburger ---------- */
+const overlay = document.getElementById('mobileOverlay');
+document.getElementById('hamburger').addEventListener('click', () => overlay.classList.add('open'));
+document.getElementById('mobileClose').addEventListener('click', () => overlay.classList.remove('open'));
+function closeMobile() { overlay.classList.remove('open'); }
+</script>
+</body>
+</html>
